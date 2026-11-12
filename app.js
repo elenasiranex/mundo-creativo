@@ -48,13 +48,14 @@ function cambiarGenero(genero) {
   idxPelo = 0;
   document.getElementById('btn-nina').classList.toggle('activo', genero === 'nina');
   document.getElementById('btn-nino').classList.toggle('activo', genero === 'nino');
-  
-  // Cambia forma de falda a pantalón corto según género
+
   const prendaInf = document.getElementById('prenda-inferior');
-  if (genero === 'nina') {
-    prendaInf.setAttribute('d', 'M43 160 H107 L113 188 H37 Z');
-  } else {
-    prendaInf.setAttribute('d', 'M43 160 H107 V188 H78 V174 H72 V188 H43 Z');
+  if (prendaInf) {
+    if (genero === 'nina') {
+      prendaInf.setAttribute('d', 'M43 160 H107 L113 188 H37 Z');
+    } else {
+      prendaInf.setAttribute('d', 'M43 160 H107 V188 H78 V174 H72 V188 H43 Z');
+    }
   }
   actualizarPelo();
 }
@@ -72,70 +73,94 @@ function cambiarPelo() {
 
 function actualizarPelo() {
   const lista = generoActual === 'nina' ? peinadosNina : peinadosNino;
-  document.getElementById('capa-pelo-trasero').innerHTML = lista[idxPelo].trasero;
-  document.getElementById('capa-pelo-frontal').innerHTML = lista[idxPelo].frontal;
+  const trasero = document.getElementById('capa-pelo-trasero');
+  const frontal = document.getElementById('capa-pelo-frontal');
+  if (trasero) trasero.innerHTML = lista[idxPelo].trasero;
+  if (frontal) frontal.innerHTML = lista[idxPelo].frontal;
 }
 
 function cambiarRopa() {
   idxRopa = (idxRopa + 1) % conjuntosRopa.length;
-  document.getElementById('prenda-superior').setAttribute('fill', conjuntosRopa[idxRopa].sup);
-  document.getElementById('prenda-inferior').setAttribute('fill', conjuntosRopa[idxRopa].inf);
+  const sup = document.getElementById('prenda-superior');
+  const inf = document.getElementById('prenda-inferior');
+  if (sup) sup.setAttribute('fill', conjuntosRopa[idxRopa].sup);
+  if (inf) inf.setAttribute('fill', conjuntosRopa[idxRopa].inf);
 }
 
-// Inicializar peinado al cargar
 actualizarPelo();
 
-// --- 2. SISTEMA DE ARRASTRAR Y SOLTAR ---
+// --- 2. SISTEMA DE ARRASTRAR Y SOLTAR ESTABLE (Ratón y Táctil) ---
+let elementoActivo = null;
+let offsetX = 0;
+let offsetY = 0;
+
 document.querySelectorAll('.arrastrable').forEach(elemento => {
-  let offsetX = 0, offsetY = 0, arrastrando = false;
-
   elemento.addEventListener('pointerdown', (e) => {
-    arrastrando = true;
-    // Si agarramos al avatar mientras duerme, se despierta
-    if (elemento.id === 'avatar') despertarAvatar();
-    
-    const rect = elemento.getBoundingClientRect();
-    const casaRect = document.getElementById('casa').getBoundingClientRect();
-    offsetX = e.clientX - (rect.left - casaRect.left);
-    offsetY = e.clientY - (rect.top - casaRect.top);
-    elemento.setPointerCapture(e.pointerId);
-  });
+    e.preventDefault();
+    elementoActivo = elemento;
 
-  elemento.addEventListener('pointermove', (e) => {
-    if (!arrastrando) return;
-    const casaRect = document.getElementById('casa').getBoundingClientRect();
-    elemento.style.left = `${e.clientX - casaRect.left - offsetX}px`;
-    elemento.style.top = `${e.clientY - casaRect.top - offsetY}px`;
-  });
+    if (elemento.id === 'avatar') {
+      despertarAvatar();
+    }
 
-  elemento.addEventListener('pointerup', (e) => {
-    arrastrando = false;
-    elemento.releasePointerCapture(e.pointerId);
+    const casa = document.getElementById('casa');
+    const casaRect = casa.getBoundingClientRect();
+    const elemLeft = parseFloat(elemento.style.left) || 0;
+    const elemTop = parseFloat(elemento.style.top) || 0;
 
-    if (elemento.id === 'avatar') comprobarSiAcuesta();
-    if (elemento.classList.contains('comida')) comprobarInteraccionComida(elemento);
+    offsetX = (e.clientX - casaRect.left) - elemLeft;
+    offsetY = (e.clientY - casaRect.top) - elemTop;
+    elemento.style.zIndex = '100';
   });
+});
+
+window.addEventListener('pointermove', (e) => {
+  if (!elementoActivo) return;
+  const casa = document.getElementById('casa');
+  const casaRect = casa.getBoundingClientRect();
+
+  const nuevaX = (e.clientX - casaRect.left) - offsetX;
+  const nuevaY = (e.clientY - casaRect.top) - offsetY;
+
+  elementoActivo.style.left = `${nuevaX}px`;
+  elementoActivo.style.top = `${nuevaY}px`;
+});
+
+window.addEventListener('pointerup', () => {
+  if (!elementoActivo) return;
+  const soltado = elementoActivo;
+  elementoActivo = null;
+  soltado.style.zIndex = '20';
+
+  if (soltado.id === 'avatar') {
+    comprobarSiAcuesta();
+  } else if (soltado.classList.contains('comida')) {
+    comprobarInteraccionComida(soltado);
+  }
 });
 
 // --- 3. MECÁNICAS DE DESCUBRIMIENTO E INTERACCIÓN ---
 
-// A. Dormir en la cama
 function comprobarSiAcuesta() {
   const avatar = document.getElementById('avatar');
-  const cama = document.getElementById('cama').getBoundingClientRect();
+  const cama = document.getElementById('cama');
+  if (!avatar || !cama) return;
+
+  const camaRect = cama.getBoundingClientRect();
   const avRect = avatar.getBoundingClientRect();
 
   const sobreCama = !(
-    avRect.right < cama.left + 30 ||
-    avRect.left > cama.right - 30 ||
-    avRect.bottom < cama.top + 20 ||
-    avRect.top > cama.bottom - 20
+    avRect.right < camaRect.left + 20 ||
+    avRect.left > camaRect.right - 20 ||
+    avRect.bottom < camaRect.top + 10 ||
+    avRect.top > camaRect.bottom - 10
   );
 
   if (sobreCama) {
     avatar.classList.add('durmiendo');
-    avatar.style.left = '90px';
-    avatar.style.top = '205px';
+    avatar.style.left = '95px';
+    avatar.style.top = '215px';
+    avatar.style.zIndex = '40';
     document.getElementById('ojos-abiertos').style.display = 'none';
     document.getElementById('ojos-cerrados').style.display = 'block';
     document.getElementById('zzz').classList.remove('oculto');
@@ -144,36 +169,38 @@ function comprobarSiAcuesta() {
 
 function despertarAvatar() {
   const avatar = document.getElementById('avatar');
+  if (!avatar) return;
   avatar.classList.remove('durmiendo');
   document.getElementById('ojos-abiertos').style.display = 'block';
   document.getElementById('ojos-cerrados').style.display = 'none';
   document.getElementById('zzz').classList.add('oculto');
 }
 
-// B. Ventana Día / Noche
 function alternarDiaNoche() {
-  document.getElementById('cielo-ventana').classList.toggle('noche');
+  const cielo = document.getElementById('cielo-ventana');
+  if (cielo) cielo.classList.toggle('noche');
 }
 
-// C. Nevera que se abre y cierra
 function alternarNevera() {
-  document.getElementById('puerta-nevera').classList.toggle('abierta');
-  tocarNota(440, 0.1);
+  const puerta = document.getElementById('puerta-nevera');
+  if (puerta) {
+    puerta.classList.toggle('abierta');
+    tocarNota(440, 0.1);
+  }
 }
 
-// D. Cocinar en la sartén y dar de comer al avatar
 function comprobarInteraccionComida(comida) {
   const comidaRect = comida.getBoundingClientRect();
-  const sartenRect = document.getElementById('sarten').getBoundingClientRect();
-  const avatarRect = document.getElementById('avatar').getBoundingClientRect();
+  const sarten = document.getElementById('sarten');
+  const avatar = document.getElementById('avatar');
 
-  // 1. ¿Está el huevo crudo sobre la sartén? -> ¡Se cocina!
-  if (comida.id === 'huevo' && comida.dataset.estado === 'crudo') {
+  if (sarten && comida.id === 'huevo' && comida.dataset.estado === 'crudo') {
+    const sartenRect = sarten.getBoundingClientRect();
     const enSarten = !(
-      comidaRect.right < sartenRect.left ||
-      comidaRect.left > sartenRect.right ||
-      comidaRect.bottom < sartenRect.top ||
-      comidaRect.top > sartenRect.bottom
+      comidaRect.right < sartenRect.left - 10 ||
+      comidaRect.left > sartenRect.right + 10 ||
+      comidaRect.bottom < sartenRect.top - 15 ||
+      comidaRect.top > sartenRect.bottom + 15
     );
 
     if (enSarten) {
@@ -188,53 +215,75 @@ function comprobarInteraccionComida(comida) {
     }
   }
 
-  // 2. ¿Está cerca de la cara del avatar? -> ¡Se lo come!
-  const cercaCara = !(
-    comidaRect.right < avatarRect.left + 20 ||
-    comidaRect.left > avatarRect.right - 20 ||
-    comidaRect.bottom < avatarRect.top ||
-    comidaRect.top > avatarRect.top + 110
-  );
+  if (avatar) {
+    const avatarRect = avatar.getBoundingClientRect();
+    const cercaCara = !(
+      comidaRect.right < avatarRect.left + 15 ||
+      comidaRect.left > avatarRect.right - 15 ||
+      comidaRect.bottom < avatarRect.top ||
+      comidaRect.top > avatarRect.top + 115
+    );
 
-  if (cercaCara) {
-    comida.style.display = 'none';
-    tocarNota(520, 0.15);
-    setTimeout(() => tocarNota(680, 0.15), 120);
+    if (cercaCara) {
+      comida.style.display = 'none';
+      tocarNota(520, 0.15);
+      setTimeout(() => tocarNota(680, 0.15), 120);
+    }
   }
 }
 
 function reponerNevera() {
   const huevo = document.getElementById('huevo');
-  huevo.style.display = 'block';
-  huevo.style.left = '760px';
-  huevo.style.top = '230px';
-  huevo.dataset.estado = 'crudo';
-  huevo.innerHTML = `<svg width="42" height="48" viewBox="0 0 42 48"><ellipse cx="21" cy="26" rx="15" ry="19" fill="#FFF3E0" stroke="#E0C097" stroke-width="2"/></svg>`;
+  if (huevo) {
+    huevo.style.display = 'block';
+    huevo.style.left = '760px';
+    huevo.style.top = '230px';
+    huevo.dataset.estado = 'crudo';
+    huevo.innerHTML = `<svg width="42" height="48" viewBox="0 0 42 48"><ellipse cx="21" cy="26" rx="15" ry="19" fill="#FFF3E0" stroke="#E0C097" stroke-width="2"/></svg>`;
+  }
 
   const fresa = document.getElementById('fresa');
-  fresa.style.display = 'block';
-  fresa.style.left = '810px';
-  fresa.style.top = '235px';
+  if (fresa) {
+    fresa.style.display = 'block';
+    fresa.style.left = '810px';
+    fresa.style.top = '235px';
+  }
 
   const leche = document.getElementById('leche');
-  leche.style.display = 'block';
-  leche.style.left = '775px';
-  leche.style.top = '305px';
+  if (leche) {
+    leche.style.display = 'block';
+    leche.style.left = '775px';
+    leche.style.top = '305px';
+  }
 }
 
-// E. Radio musical (Melodía infantil sintetizada sin archivos externos)
+// --- 4. AUDIO ÚNICO (Evita bloqueo del navegador) ---
+let audioCtx = null;
 let intervaloMusica = null;
-const melodia = [523, 587, 659, 523, 659, 587, 523]; // Do Re Mi Do Mi Re Do
+const melodia = [523, 587, 659, 523, 659, 587, 523];
 let notaIdx = 0;
+
+function obtenerAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) audioCtx = new AudioContextClass();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
 
 function alternarRadio() {
   const notasVis = document.getElementById('notas-musicales');
   if (intervaloMusica) {
     clearInterval(intervaloMusica);
     intervaloMusica = null;
-    notasVis.classList.add('oculto');
+    if (notasVis) notasVis.classList.add('oculto');
   } else {
-    notasVis.classList.remove('oculto');
+    if (notasVis) notasVis.classList.remove('oculto');
+    tocarNota(melodia[0], 0.22);
+    notaIdx = 1;
     intervaloMusica = setInterval(() => {
       tocarNota(melodia[notaIdx], 0.22);
       notaIdx = (notaIdx + 1) % melodia.length;
@@ -243,7 +292,8 @@ function alternarRadio() {
 }
 
 function tocarNota(frecuencia, duracion) {
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const ctx = obtenerAudioContext();
+  if (!ctx) return;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
