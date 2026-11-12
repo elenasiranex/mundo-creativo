@@ -2,11 +2,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  user-select: none; /* Evita seleccionar texto al arrastrar */
+  user-select: none;
 }
 
 body {
-  font-family: system-ui, sans-serif;
+  font-family: 'Segoe UI', system-ui, sans-serif;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -14,69 +14,333 @@ body {
   background-color: #2B2D42;
 }
 
+/* --- BARRA SUPERIOR --- */
 .panel-control {
   background: #ffffff;
-  padding: 12px;
+  padding: 10px 16px;
   display: flex;
-  gap: 10px;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  z-index: 100;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 200;
+}
+
+.grupo-botones {
+  display: flex;
+  gap: 8px;
 }
 
 button {
   background: #FFD166;
-  border: none;
-  padding: 10px 16px;
+  color: #2B2D42;
+  border: 2px solid #F4A261;
+  padding: 8px 14px;
   border-radius: 20px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: transform 0.1s, background 0.2s;
 }
 
 button:active {
-  transform: scale(0.95);
+  transform: scale(0.94);
 }
 
-#escenario {
-  position: relative;
+button.activo {
+  background: #FF6B6B;
+  color: white;
+  border-color: #C92A2A;
+}
+
+.btn-secundario {
+  background: #A8DADC;
+  border-color: #457B9D;
+}
+
+/* --- CONTENEDOR DE LA CASA (Permite deslizar entre habitaciones en pantallas pequeñas) --- */
+#casa-contenedor {
   flex: 1;
-  background: linear-gradient(to bottom, #CBE8F6 70%, #E6CCB2 70%);
-  transition: filter 0.3s ease;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
 }
 
-/* Efecto cuando apagan la lámpara */
-#escenario.luz-apagada {
-  filter: brightness(0.45);
+#casa {
+  display: flex;
+  width: 1150px;
+  height: 100%;
+  position: relative;
 }
 
-#mesa {
+.habitacion {
+  position: relative;
+  height: 100%;
+  flex: 1;
+}
+
+/* --- DORMITORIO --- */
+.dormitorio {
+  width: 560px;
+  background: linear-gradient(to bottom, #FCE1E4 68%, #E6CCB2 68%);
+}
+
+#ventana {
   position: absolute;
-  left: 40px;
-  top: 355px;
-  width: 170px;
-  height: 75px;
-  background: #B08968;
-  border-top: 12px solid #7F5539;
-  border-radius: 6px;
+  left: 70px;
+  top: 50px;
+  width: 130px;
+  height: 140px;
+  background: #FFF;
+  border: 8px solid #8D5524;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
-.objeto-fijo {
+.cielo-ventana {
+  width: 100%;
+  height: 100%;
+  background: #8ECAE6;
+  transition: background 0.5s;
+  position: relative;
+}
+
+.cielo-ventana.noche {
+  background: #1D3557;
+}
+
+.astro {
+  width: 34px;
+  height: 34px;
+  background: #FFB703;
+  border-radius: 50%;
   position: absolute;
-  left: 90px;
-  top: 245px;
+  top: 18px;
+  right: 18px;
+  box-shadow: 0 0 15px #FFB703;
+  transition: all 0.5s;
+}
+
+.cielo-ventana.noche .astro {
+  background: #F1FAEE;
+  box-shadow: 0 0 12px #F1FAEE;
+}
+
+.marco-ventana {
+  position: absolute;
+  inset: 0;
+  border-right: 4px solid #8D5524;
+  width: 50%;
+  pointer-events: none;
+}
+
+.estanteria {
+  position: absolute;
+  left: 270px;
+  top: 130px;
+  width: 140px;
+  height: 14px;
+  background: #8D5524;
+  border-radius: 4px;
+}
+
+#radio {
+  position: absolute;
+  top: -58px;
+  left: 25px;
   cursor: pointer;
 }
 
+#notas-musicales {
+  position: absolute;
+  top: -25px;
+  right: -15px;
+  font-size: 20px;
+  animation: flotar 1.5s infinite alternate;
+}
+
+.alfombra {
+  position: absolute;
+  left: 80px;
+  top: 390px;
+  width: 280px;
+  height: 65px;
+  background: #CDB4DB;
+  border: 5px solid #FFC8DD;
+  border-radius: 50%;
+}
+
+#cama {
+  position: absolute;
+  left: 35px;
+  top: 265px;
+  width: 240px;
+  height: 150px;
+}
+
+#edredon {
+  position: absolute;
+  left: 85px;
+  top: 68px;
+  width: 132px;
+  height: 52px;
+  background: repeating-linear-gradient(45deg, #FFAFCC, #FFAFCC 12px, #FFC8DD 12px, #FFC8DD 24px);
+  border-radius: 10px;
+  border: 2px solid #FF8FA3;
+  z-index: 60; /* Tapa al avatar cuando se acuesta */
+  pointer-events: none;
+}
+
+#zzz {
+  position: absolute;
+  top: -20px;
+  left: 40px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #457B9D;
+  animation: flotar 1.5s infinite alternate;
+  z-index: 70;
+}
+
+/* --- DIVISOR ENTRE HABITACIONES --- */
+.arco-divisor {
+  width: 24px;
+  height: 100%;
+  background: #D4A373;
+  border-left: 4px solid #BC6C25;
+  border-right: 4px solid #BC6C25;
+}
+
+/* --- COCINA --- */
+.cocina {
+  width: 566px;
+  background: linear-gradient(to bottom, #E8F5E9 68%, #D8E2DC 68%);
+}
+
+.encimera {
+  position: absolute;
+  left: 30px;
+  top: 260px;
+  width: 170px;
+  height: 130px;
+  background: #A8DADC;
+  border-top: 14px solid #457B9D;
+  border-radius: 6px;
+}
+
+.fogon {
+  position: absolute;
+  top: -20px;
+  left: 45px;
+  width: 70px;
+  height: 6px;
+  background: #2B2D42;
+}
+
+#sarten {
+  position: absolute;
+  top: -42px;
+  left: 35px;
+}
+
+#nevera-contenedor {
+  position: absolute;
+  left: 225px;
+  top: 140px;
+  width: 130px;
+  height: 250px;
+}
+
+.nevera-interior {
+  width: 100%;
+  height: 100%;
+  background: #CAF0F8;
+  border: 8px solid #90E0EF;
+  border-radius: 14px;
+  position: relative;
+}
+
+.balda {
+  position: absolute;
+  top: 75px;
+  width: 100%;
+  height: 6px;
+  background: #90E0EF;
+}
+
+#puerta-nevera {
+  position: absolute;
+  inset: 0;
+  background: #FFFFFF;
+  border: 6px solid #ADE8F4;
+  border-radius: 14px;
+  cursor: pointer;
+  transform-origin: right center;
+  transition: transform 0.4s ease;
+  z-index: 30;
+  box-shadow: -4px 4px 10px rgba(0,0,0,0.1);
+}
+
+#puerta-nevera.abierta {
+  transform: perspective(600px) rotateY(115deg);
+}
+
+.tirador {
+  position: absolute;
+  left: 12px;
+  top: 85px;
+  width: 8px;
+  height: 55px;
+  background: #ADB5BD;
+  border-radius: 4px;
+}
+
+.iman-corazon {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  font-size: 22px;
+}
+
+.mesa-cocina {
+  position: absolute;
+  left: 390px;
+  top: 305px;
+  width: 145px;
+  height: 85px;
+  background: #DDB892;
+  border-top: 12px solid #B08968;
+  border-radius: 6px;
+}
+
+/* --- ELEMENTOS ARRASTRABLES --- */
 .arrastrable {
   position: absolute;
   cursor: grab;
-  touch-action: none; /* Vital para que funcione fluido en tablets y móviles */
-  z-index: 10;
+  touch-action: none;
+  z-index: 20;
+  transition: transform 0.2s;
 }
 
 .arrastrable:active {
   cursor: grabbing;
-  z-index: 50; /* Pone al frente lo que estés agarrando */
+  z-index: 100;
+}
+
+/* Estado dormido del avatar */
+#avatar.durmiendo {
+  transform: rotate(90deg) scale(0.92);
+  z-index: 40;
+}
+
+.oculto {
+  display: none !important;
+}
+
+@keyframes flotar {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
 }
