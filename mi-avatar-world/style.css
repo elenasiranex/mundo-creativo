@@ -1,0 +1,82 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none; /* Evita seleccionar texto al arrastrar */
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #2B2D42;
+}
+
+.panel-control {
+  background: #ffffff;
+  padding: 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+button {
+  background: #FFD166;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+#escenario {
+  position: relative;
+  flex: 1;
+  background: linear-gradient(to bottom, #CBE8F6 70%, #E6CCB2 70%);
+  transition: filter 0.3s ease;
+}
+
+/* Efecto cuando apagan la lámpara */
+#escenario.luz-apagada {
+  filter: brightness(0.45);
+}
+
+#mesa {
+  position: absolute;
+  left: 40px;
+  top: 355px;
+  width: 170px;
+  height: 75px;
+  background: #B08968;
+  border-top: 12px solid #7F5539;
+  border-radius: 6px;
+}
+
+.objeto-fijo {
+  position: absolute;
+  left: 90px;
+  top: 245px;
+  cursor: pointer;
+}
+
+.arrastrable {
+  position: absolute;
+  cursor: grab;
+  touch-action: none; /* Vital para que funcione fluido en tablets y móviles */
+  z-index: 10;
+}
+
+.arrastrable:active {
+  cursor: grabbing;
+  z-index: 50; /* Pone al frente lo que estés agarrando */
+}
