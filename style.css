@@ -14,13 +14,12 @@ body {
   background-color: #2B2D42;
 }
 
-/* --- BARRA SUPERIOR --- */
 .panel-control {
   background: #ffffff;
   padding: 10px 16px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -38,10 +37,10 @@ button {
   border: 2px solid #F4A261;
   padding: 8px 14px;
   border-radius: 20px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.1s, background 0.2s;
+  transition: transform 0.1s;
 }
 
 button:active {
@@ -59,7 +58,6 @@ button.activo {
   border-color: #457B9D;
 }
 
-/* --- CONTENEDOR DE LA CASA (Permite deslizar entre habitaciones en pantallas pequeñas) --- */
 #casa-contenedor {
   flex: 1;
   overflow-x: auto;
@@ -69,7 +67,8 @@ button.activo {
 
 #casa {
   display: flex;
-  width: 1150px;
+  min-width: 100%;
+  width: 1320px;
   height: 100%;
   position: relative;
 }
@@ -82,22 +81,20 @@ button.activo {
 
 /* --- DORMITORIO --- */
 .dormitorio {
-  width: 560px;
   background: linear-gradient(to bottom, #FCE1E4 68%, #E6CCB2 68%);
 }
 
 #ventana {
   position: absolute;
-  left: 70px;
-  top: 50px;
-  width: 130px;
-  height: 140px;
+  left: 45px;
+  top: 45px;
+  width: 120px;
+  height: 135px;
   background: #FFF;
   border: 8px solid #8D5524;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
 .cielo-ventana {
@@ -113,13 +110,13 @@ button.activo {
 }
 
 .astro {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   background: #FFB703;
   border-radius: 50%;
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 16px;
+  right: 16px;
   box-shadow: 0 0 15px #FFB703;
   transition: all 0.5s;
 }
@@ -128,6 +125,16 @@ button.activo {
   background: #F1FAEE;
   box-shadow: 0 0 12px #F1FAEE;
 }
+
+.estrella {
+  position: absolute;
+  color: #FFF;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.e1 { top: 20px; left: 20px; font-size: 14px; }
+.e2 { top: 55px; left: 45px; font-size: 12px; }
+.cielo-ventana.noche .estrella { opacity: 1; }
 
 .marco-ventana {
   position: absolute;
@@ -139,9 +146,9 @@ button.activo {
 
 .estanteria {
   position: absolute;
-  left: 270px;
-  top: 130px;
-  width: 140px;
+  left: 215px;
+  top: 125px;
+  width: 135px;
   height: 14px;
   background: #8D5524;
   border-radius: 4px;
@@ -150,7 +157,7 @@ button.activo {
 #radio {
   position: absolute;
   top: -58px;
-  left: 25px;
+  left: 22px;
   cursor: pointer;
 }
 
@@ -162,12 +169,76 @@ button.activo {
   animation: flotar 1.5s infinite alternate;
 }
 
+/* Armario del Dormitorio */
+#armario-contenedor {
+  position: absolute;
+  left: 430px;
+  top: 135px;
+  width: 145px;
+  height: 255px;
+}
+
+.armario-interior {
+  width: 100%;
+  height: 100%;
+  background: #FFE5D9;
+  border: 8px solid #D4A373;
+  border-radius: 10px;
+  position: relative;
+}
+
+.barra-perchas {
+  position: absolute;
+  top: 38px;
+  width: 100%;
+  height: 6px;
+  background: #8D5524;
+}
+
+#puerta-armario {
+  position: absolute;
+  inset: 0;
+  background: #FAEDCD;
+  border: 6px solid #D4A373;
+  border-radius: 10px;
+  cursor: pointer;
+  transform-origin: left center;
+  transition: transform 0.4s ease;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+#puerta-armario.abierta {
+  transform: perspective(600px) rotateY(-115deg);
+  pointer-events: none; /* Permite agarrar la ropa dentro */
+}
+
+.pomo-armario {
+  position: absolute;
+  right: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #8D5524;
+}
+
+/* Caballete de Pintura */
+#caballete {
+  position: absolute;
+  left: 295px;
+  top: 245px;
+  cursor: pointer;
+}
+
 .alfombra {
   position: absolute;
-  left: 80px;
-  top: 390px;
-  width: 280px;
-  height: 65px;
+  left: 60px;
+  top: 395px;
+  width: 260px;
+  height: 60px;
   background: #CDB4DB;
   border: 5px solid #FFC8DD;
   border-radius: 50%;
@@ -175,7 +246,7 @@ button.activo {
 
 #cama {
   position: absolute;
-  left: 35px;
+  left: 25px;
   top: 265px;
   width: 240px;
   height: 150px;
@@ -190,7 +261,7 @@ button.activo {
   background: repeating-linear-gradient(45deg, #FFAFCC, #FFAFCC 12px, #FFC8DD 12px, #FFC8DD 24px);
   border-radius: 10px;
   border: 2px solid #FF8FA3;
-  z-index: 60; /* Tapa al avatar cuando se acuesta */
+  z-index: 60;
   pointer-events: none;
 }
 
@@ -205,7 +276,7 @@ button.activo {
   z-index: 70;
 }
 
-/* --- DIVISOR ENTRE HABITACIONES --- */
+/* --- DIVISOR --- */
 .arco-divisor {
   width: 24px;
   height: 100%;
@@ -216,15 +287,14 @@ button.activo {
 
 /* --- COCINA --- */
 .cocina {
-  width: 566px;
   background: linear-gradient(to bottom, #E8F5E9 68%, #D8E2DC 68%);
 }
 
 .encimera {
   position: absolute;
-  left: 30px;
-  top: 260px;
-  width: 170px;
+  left: 40px;
+  top: 265px;
+  width: 185px;
   height: 130px;
   background: #A8DADC;
   border-top: 14px solid #457B9D;
@@ -234,24 +304,41 @@ button.activo {
 .fogon {
   position: absolute;
   top: -20px;
-  left: 45px;
-  width: 70px;
+  left: 50px;
+  width: 75px;
   height: 6px;
   background: #2B2D42;
 }
 
+.llama {
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  width: 55px;
+  height: 8px;
+  background: #00BBF9;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.llama.encendida {
+  opacity: 1;
+  box-shadow: 0 0 10px #00BBF9;
+}
+
 #sarten {
   position: absolute;
-  top: -42px;
-  left: 35px;
+  top: -46px;
+  left: 38px;
 }
 
 #nevera-contenedor {
   position: absolute;
-  left: 225px;
+  left: 270px;
   top: 140px;
-  width: 130px;
-  height: 250px;
+  width: 135px;
+  height: 255px;
 }
 
 .nevera-interior {
@@ -286,6 +373,7 @@ button.activo {
 
 #puerta-nevera.abierta {
   transform: perspective(600px) rotateY(115deg);
+  pointer-events: none; /* Permite sacar la comida de dentro */
 }
 
 .tirador {
@@ -307,10 +395,10 @@ button.activo {
 
 .mesa-cocina {
   position: absolute;
-  left: 390px;
+  left: 445px;
   top: 305px;
-  width: 145px;
-  height: 85px;
+  width: 155px;
+  height: 90px;
   background: #DDB892;
   border-top: 12px solid #B08968;
   border-radius: 6px;
@@ -322,7 +410,6 @@ button.activo {
   cursor: grab;
   touch-action: none;
   z-index: 20;
-  transition: transform 0.2s;
 }
 
 .arrastrable:active {
@@ -330,9 +417,13 @@ button.activo {
   z-index: 100;
 }
 
-/* Estado dormido del avatar */
+.oculto-nevera, .oculto-puerta {
+  display: none;
+}
+
+/* Avatar dormido con cabeza en la almohada (izquierda) */
 #avatar.durmiendo {
-  transform: rotate(90deg) scale(0.92);
+  transform: rotate(-90deg) scale(0.9);
   z-index: 40;
 }
 
