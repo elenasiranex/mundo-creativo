@@ -1,4 +1,4 @@
-// --- 1. CONFIGURACIÓN DEL AVATAR ---
+// --- 1. CONFIGURACIÓN DEL AVATAR (Con pelo cubriendo toda la cabeza) ---
 let generoActual = 'nina';
 let idxPiel = 0;
 let idxPelo = 0;
@@ -8,39 +8,39 @@ const tonosPiel = ['#F8C8A0', '#E0AC69', '#C68642', '#8D5524', '#FFDBAC'];
 
 const peinadosNina = [
   {
-    trasero: '<rect x="28" y="42" width="94" height="80" rx="35" fill="#5C3A21"/>',
-    frontal: '<path d="M32 58 C32 10, 118 10, 118 58 C95 32, 55 32, 32 58 Z" fill="#5C3A21"/>'
+    trasero: '<rect x="26" y="38" width="98" height="86" rx="38" fill="#5C3A21"/>',
+    frontal: '<path d="M30 60 C30 8, 120 8, 120 60 C96 36, 54 36, 30 60 Z" fill="#5C3A21"/>'
   },
   {
-    trasero: '<circle cx="28" cy="35" r="18" fill="#E07A5F"/><circle cx="122" cy="35" r="18" fill="#E07A5F"/>',
-    frontal: '<path d="M32 58 C32 10, 118 10, 118 58 C95 30, 55 30, 32 58 Z" fill="#E07A5F"/>'
+    trasero: '<circle cx="28" cy="32" r="19" fill="#E07A5F"/><circle cx="122" cy="32" r="19" fill="#E07A5F"/>',
+    frontal: '<path d="M30 60 C30 8, 120 8, 120 60 C96 34, 54 34, 30 60 Z" fill="#E07A5F"/>'
   },
   {
-    trasero: '<path d="M26 48 L20 125 H130 L124 48 Z" fill="#FFB703"/>',
-    frontal: '<path d="M32 58 C32 10, 118 10, 118 58 C90 36, 60 36, 32 58 Z" fill="#FFB703"/>'
+    trasero: '<path d="M24 44 L18 126 H132 L126 44 Z" fill="#FFB703"/>',
+    frontal: '<path d="M30 60 C30 8, 120 8, 120 60 C92 38, 58 38, 30 60 Z" fill="#FFB703"/>'
   }
 ];
 
 const peinadosNino = [
   {
     trasero: '',
-    frontal: '<path d="M32 55 C32 8, 118 8, 118 55 C105 28, 45 28, 32 55 Z" fill="#2B2D42"/>'
+    frontal: '<path d="M30 58 C30 6, 120 6, 120 58 C104 32, 46 32, 30 58 Z" fill="#2B2D42"/>'
   },
   {
     trasero: '',
-    frontal: '<path d="M32 55 L42 14 L60 28 L75 8 L92 28 L110 14 L118 55 C95 30, 55 30, 32 55 Z" fill="#8D5524"/>'
+    frontal: '<path d="M30 58 L40 12 L58 28 L75 6 L92 28 L110 12 L120 58 C95 34, 55 34, 30 58 Z" fill="#8D5524"/>'
   },
   {
     trasero: '',
-    frontal: '<path d="M32 55 C32 10, 118 10, 118 55 C95 32, 55 32, 32 55 Z" fill="#D62828"/>'
+    frontal: '<path d="M30 58 C30 8, 120 8, 120 58 C95 36, 55 36, 30 58 Z" fill="#D62828"/>'
   }
 ];
 
 const expresionesBoca = [
-  'M67 76 Q75 85 83 76', // Sonrisa
-  'M68 78 Q75 92 82 78 Z', // Muy feliz / riendo
-  'M71 80 A4 4 0 1 0 79 80 A4 4 0 1 0 71 80', // Sorpresa (O)
-  'M67 82 Q75 74 83 82' // Triste / puchero
+  'M67 78 Q75 87 83 78',
+  'M68 79 Q75 93 82 79 Z',
+  'M71 81 A4 4 0 1 0 79 81 A4 4 0 1 0 71 81',
+  'M67 84 Q75 76 83 84'
 ];
 
 function cambiarGenero(genero) {
@@ -50,11 +50,10 @@ function cambiarGenero(genero) {
   document.getElementById('btn-nino').classList.toggle('activo', genero === 'nino');
 
   const prendaInf = document.getElementById('prenda-inferior');
-  if (genero === 'nina') {
-    prendaInf.setAttribute('d', 'M43 160 H107 L113 188 H37 Z');
-  } else {
-    prendaInf.setAttribute('d', 'M43 160 H107 V188 H78 V174 H72 V188 H43 Z');
-  }
+  prendaInf.setAttribute('d', genero === 'nina'
+    ? 'M43 160 H107 L113 188 H37 Z'
+    : 'M43 160 H107 V188 H78 V174 H72 V188 H43 Z'
+  );
   actualizarPelo();
 }
 
@@ -80,9 +79,69 @@ function cambiarExpresion() {
   document.getElementById('boca').setAttribute('d', expresionesBoca[idxCara]);
 }
 
-actualizarPelo();
+// --- 2. COLOCAR OBJETOS EXACTAMENTE DENTRO DE SUS MUEBLES SEGÚN EL TAMAÑO DE PANTALLA ---
+function colocarElementosEnMuebles() {
+  const casaRect = document.getElementById('casa').getBoundingClientRect();
 
-// --- 2. SISTEMA DE ARRASTRAR Y SOLTAR ---
+  // Avatar en el dormitorio
+  const avatar = document.getElementById('avatar');
+  avatar.style.left = `${casaRect.width * 0.30}px`;
+  avatar.style.top = `${casaRect.height * 0.42}px`;
+
+  // Peluche en la alfombra
+  const alfombra = document.querySelector('.alfombra').getBoundingClientRect();
+  const peluche = document.getElementById('peluche');
+  peluche.style.left = `${alfombra.left - casaRect.left + 160}px`;
+  peluche.style.top = `${alfombra.top - casaRect.top - 10}px`;
+
+  // Ropa y corona dentro del armario
+  const armario = document.getElementById('armario').getBoundingClientRect();
+  const armX = armario.left - casaRect.left;
+  const armY = armario.top - casaRect.top;
+
+  const vestido = document.getElementById('vestido-rojo');
+  vestido.style.left = `${armX + 16}px`;
+  vestido.style.top = `${armY + 42}px`;
+
+  const conjunto = document.getElementById('conjunto-verde');
+  conjunto.style.left = `${armX + 70}px`;
+  conjunto.style.top = `${armY + 42}px`;
+
+  const corona = document.getElementById('corona');
+  corona.style.left = `${armX + 42}px`;
+  corona.style.top = `${armY + 125}px`;
+
+  // Comida dentro de la nevera
+  const nevera = document.getElementById('nevera').getBoundingClientRect();
+  const nevX = nevera.left - casaRect.left;
+  const nevY = nevera.top - casaRect.top;
+
+  const huevo = document.getElementById('huevo');
+  huevo.style.left = `${nevX + 20}px`;
+  huevo.style.top = `${nevY + 22}px`;
+
+  const fresa = document.getElementById('fresa');
+  fresa.style.left = `${nevX + 70}px`;
+  fresa.style.top = `${nevY + 26}px`;
+
+  const leche = document.getElementById('leche');
+  leche.style.left = `${nevX + 44}px`;
+  leche.style.top = `${nevY + 75}px`;
+
+  // Manzana sobre la mesa
+  const mesa = document.querySelector('.mesa-cocina').getBoundingClientRect();
+  const manzana = document.getElementById('manzana');
+  manzana.style.left = `${mesa.left - casaRect.left + 48}px`;
+  manzana.style.top = `${mesa.top - casaRect.top - 38}px`;
+}
+
+window.addEventListener('load', () => {
+  actualizarPelo();
+  colocarElementosEnMuebles();
+});
+window.addEventListener('resize', colocarElementosEnMuebles);
+
+// --- 3. ARRASTRAR Y SOLTAR ---
 let elementoActivo = null;
 let offsetX = 0;
 let offsetY = 0;
@@ -91,15 +150,11 @@ document.querySelectorAll('.arrastrable').forEach(elemento => {
   elemento.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     elementoActivo = elemento;
-
     if (elemento.id === 'avatar') despertarAvatar();
 
     const casaRect = document.getElementById('casa').getBoundingClientRect();
-    const elemLeft = parseFloat(elemento.style.left) || 0;
-    const elemTop = parseFloat(elemento.style.top) || 0;
-
-    offsetX = (e.clientX - casaRect.left) - elemLeft;
-    offsetY = (e.clientY - casaRect.top) - elemTop;
+    offsetX = (e.clientX - casaRect.left) - (parseFloat(elemento.style.left) || 0);
+    offsetY = (e.clientY - casaRect.top) - (parseFloat(elemento.style.top) || 0);
     elemento.style.zIndex = '100';
   });
 });
@@ -124,13 +179,12 @@ window.addEventListener('pointerup', () => {
   }
 });
 
-// --- 3. MECÁNICAS DE DESCUBRIMIENTO ---
-
-// A. Dormir en la cama (Cabeza a la izquierda en la almohada)
+// --- 4. INTERACCIONES ---
 function comprobarSiAcuesta() {
   const avatar = document.getElementById('avatar');
   const camaRect = document.getElementById('cama').getBoundingClientRect();
   const avRect = avatar.getBoundingClientRect();
+  const casaRect = document.getElementById('casa').getBoundingClientRect();
 
   const sobreCama = !(
     avRect.right < camaRect.left + 20 ||
@@ -141,8 +195,8 @@ function comprobarSiAcuesta() {
 
   if (sobreCama) {
     avatar.classList.add('durmiendo');
-    avatar.style.left = '80px';
-    avatar.style.top = '205px';
+    avatar.style.left = `${camaRect.left - casaRect.left + 48}px`;
+    avatar.style.top = `${camaRect.top - casaRect.top - 52}px`;
     avatar.style.zIndex = '40';
     document.getElementById('ojos-abiertos').style.display = 'none';
     document.getElementById('ojos-cerrados').style.display = 'block';
@@ -158,32 +212,22 @@ function despertarAvatar() {
   document.getElementById('zzz').classList.add('oculto');
 }
 
-// B. Ventana Día / Noche
 function alternarDiaNoche() {
   document.getElementById('cielo-ventana').classList.toggle('noche');
 }
 
-// C. Nevera que se abre y muestra la comida
 function alternarNevera() {
-  const puerta = document.getElementById('puerta-nevera');
-  puerta.classList.add('abierta');
-  document.querySelectorAll('.oculto-nevera').forEach(el => {
-    el.style.display = 'block';
-  });
+  document.getElementById('puerta-nevera').classList.add('abierta');
+  document.querySelectorAll('.item-nevera').forEach(el => el.style.display = 'block');
   tocarNota(440, 0.12);
 }
 
-// D. Armario que se abre y muestra ropa y corona
 function alternarArmario() {
-  const puerta = document.getElementById('puerta-armario');
-  puerta.classList.add('abierta');
-  document.querySelectorAll('.oculto-puerta').forEach(el => {
-    el.style.display = 'block';
-  });
+  document.getElementById('puerta-armario').classList.add('abierta');
+  document.querySelectorAll('.item-armario').forEach(el => el.style.display = 'block');
   tocarNota(520, 0.12);
 }
 
-// E. Vestir al avatar arrastrando ropa o corona encima
 function comprobarVestirAvatar(objeto) {
   const objRect = objeto.getBoundingClientRect();
   const avRect = document.getElementById('avatar').getBoundingClientRect();
@@ -209,7 +253,6 @@ function comprobarVestirAvatar(objeto) {
   }
 }
 
-// F. Pintar cuadros en el caballete
 let dibujoIdx = 0;
 const dibujosLienzo = [
   '<circle cx="55" cy="52" r="14" fill="#FFD166"/><path d="M22 86 L45 55 L68 86 Z" fill="#06D6A0"/><path d="M48 86 L70 50 L88 86 Z" fill="#118AB2"/>',
@@ -224,16 +267,14 @@ function pintarCuadro() {
   tocarNota(660, 0.1);
 }
 
-// G. Cocinar en la sartén y comer
 function comprobarInteraccionComida(comida) {
   const comidaRect = comida.getBoundingClientRect();
-  const sarten = document.getElementById('sarten');
-  const avatar = document.getElementById('avatar');
+  const sartenRect = document.getElementById('sarten').getBoundingClientRect();
+  const avatarRect = document.getElementById('avatar').getBoundingClientRect();
+  const casaRect = document.getElementById('casa').getBoundingClientRect();
 
-  if (sarten && comida.id === 'huevo' && comida.dataset.estado === 'crudo') {
-    const sartenRect = sarten.getBoundingClientRect();
-    const margen = 50;
-
+  if (comida.id === 'huevo' && comida.dataset.estado === 'crudo') {
+    const margen = 45;
     const enSarten = !(
       comidaRect.right < sartenRect.left - margen ||
       comidaRect.left > sartenRect.right + margen ||
@@ -244,11 +285,10 @@ function comprobarInteraccionComida(comida) {
     if (enSarten) {
       comida.dataset.estado = 'frito';
       document.getElementById('llama-fogon').classList.add('encendida');
-      // Coloca el huevo frito encima de la sartén
-      comida.style.left = '760px';
-      comida.style.top = '210px';
+      comida.style.left = `${sartenRect.left - casaRect.left + 20}px`;
+      comida.style.top = `${sartenRect.top - casaRect.top - 8}px`;
       comida.innerHTML = `
-        <svg width="52" height="45" viewBox="0 0 52 45">
+        <svg width="50" height="42" viewBox="0 0 52 45">
           <path d="M10 22 Q5 10 25 8 Q45 6 46 22 Q48 38 26 37 Q8 38 10 22 Z" fill="#FFFFFF" stroke="#E9ECEF" stroke-width="2"/>
           <circle cx="27" cy="22" r="9" fill="#FFB703"/>
         </svg>`;
@@ -258,64 +298,40 @@ function comprobarInteraccionComida(comida) {
     }
   }
 
-  if (avatar) {
-    const avatarRect = avatar.getBoundingClientRect();
-    const cercaCara = !(
-      comidaRect.right < avatarRect.left + 15 ||
-      comidaRect.left > avatarRect.right - 15 ||
-      comidaRect.bottom < avatarRect.top ||
-      comidaRect.top > avatarRect.top + 115
-    );
+  const cercaCara = !(
+    comidaRect.right < avatarRect.left + 15 ||
+    comidaRect.left > avatarRect.right - 15 ||
+    comidaRect.bottom < avatarRect.top ||
+    comidaRect.top > avatarRect.top + 115
+  );
 
-    if (cercaCara) {
-      comida.style.display = 'none';
-      tocarNota(520, 0.15);
-      setTimeout(() => tocarNota(680, 0.15), 120);
-    }
+  if (cercaCara) {
+    comida.style.display = 'none';
+    tocarNota(520, 0.15);
+    setTimeout(() => tocarNota(680, 0.15), 120);
   }
 }
 
-// H. Reiniciar casa
 function reiniciarTodo() {
+  despertarAvatar();
   document.getElementById('llama-fogon').classList.remove('encendida');
   document.getElementById('corona-puesta').style.display = 'none';
 
   const huevo = document.getElementById('huevo');
-  huevo.style.left = '965px';
-  huevo.style.top = '165px';
   huevo.dataset.estado = 'crudo';
-  huevo.innerHTML = `<svg width="42" height="48" viewBox="0 0 42 48"><ellipse cx="21" cy="26" rx="15" ry="19" fill="#FFF3E0" stroke="#E0C097" stroke-width="2"/></svg>`;
+  huevo.innerHTML = `<svg width="38" height="44" viewBox="0 0 42 48"><ellipse cx="21" cy="26" rx="15" ry="19" fill="#FFF3E0" stroke="#E0C097" stroke-width="2"/></svg>`;
 
-  const fresa = document.getElementById('fresa');
-  fresa.style.left = '1015px';
-  fresa.style.top = '170px';
-
-  const leche = document.getElementById('leche');
-  leche.style.left = '980px';
-  leche.style.top = '245px';
-
-  const manzana = document.getElementById('manzana');
-  manzana.style.display = 'block';
-  manzana.style.left = '1160px';
-  manzana.style.top = '265px';
-
-  document.getElementById('vestido-rojo').style.left = '445px';
-  document.getElementById('vestido-rojo').style.top = '185px';
-  document.getElementById('conjunto-verde').style.left = '505px';
-  document.getElementById('conjunto-verde').style.top = '185px';
-  document.getElementById('corona').style.left = '470px';
-  document.getElementById('corona').style.top = '270px';
-
-  // Si las puertas están abiertas, mantiene visibles los objetos
+  document.getElementById('manzana').style.display = 'block';
   if (document.getElementById('puerta-nevera').classList.contains('abierta')) {
-    document.querySelectorAll('.oculto-nevera').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.item-nevera').forEach(el => el.style.display = 'block');
   }
   if (document.getElementById('puerta-armario').classList.contains('abierta')) {
-    document.querySelectorAll('.oculto-puerta').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.item-armario').forEach(el => el.style.display = 'block');
   }
+  colocarElementosEnMuebles();
 }
 
-// --- 4. RADIO MUSICAL ---
+// --- 5. RADIO MUSICAL ---
 let audioCtx = null;
 let intervaloMusica = null;
 const melodia = [523, 587, 659, 523, 659, 587, 523];
