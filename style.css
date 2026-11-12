@@ -10,19 +10,19 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
-  background-color: #2B2D42;
 }
 
 .panel-control {
   background: #ffffff;
-  padding: 10px 16px;
+  padding: 8px 16px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
   z-index: 200;
 }
 
@@ -35,16 +35,15 @@ button {
   background: #FFD166;
   color: #2B2D42;
   border: 2px solid #F4A261;
-  padding: 8px 14px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.1s;
 }
 
 button:active {
-  transform: scale(0.94);
+  transform: scale(0.95);
 }
 
 button.activo {
@@ -58,40 +57,34 @@ button.activo {
   border-color: #457B9D;
 }
 
-#casa-contenedor {
-  flex: 1;
-  overflow-x: auto;
-  overflow-y: hidden;
-  position: relative;
-}
-
+/* Casa ajustada al 100% de la pantalla sin franja negra */
 #casa {
   display: flex;
-  min-width: 100%;
-  width: 1320px;
-  height: 100%;
+  width: 100%;
+  flex: 1;
   position: relative;
+  overflow: hidden;
 }
 
 .habitacion {
   position: relative;
   height: 100%;
-  flex: 1;
+  width: 50%;
 }
 
 /* --- DORMITORIO --- */
 .dormitorio {
-  background: linear-gradient(to bottom, #FCE1E4 68%, #E6CCB2 68%);
+  background: linear-gradient(to bottom, #FCE1E4 72%, #E6CCB2 72%);
 }
 
 #ventana {
   position: absolute;
-  left: 45px;
-  top: 45px;
-  width: 120px;
-  height: 135px;
+  left: 5%;
+  top: 5%;
+  width: 115px;
+  height: 125px;
   background: #FFF;
-  border: 8px solid #8D5524;
+  border: 7px solid #8D5524;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -110,15 +103,14 @@ button.activo {
 }
 
 .astro {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   background: #FFB703;
   border-radius: 50%;
   position: absolute;
-  top: 16px;
-  right: 16px;
-  box-shadow: 0 0 15px #FFB703;
-  transition: all 0.5s;
+  top: 14px;
+  right: 14px;
+  box-shadow: 0 0 14px #FFB703;
 }
 
 .cielo-ventana.noche .astro {
@@ -130,10 +122,9 @@ button.activo {
   position: absolute;
   color: #FFF;
   opacity: 0;
-  transition: opacity 0.5s;
 }
-.e1 { top: 20px; left: 20px; font-size: 14px; }
-.e2 { top: 55px; left: 45px; font-size: 12px; }
+.e1 { top: 18px; left: 18px; font-size: 13px; }
+.e2 { top: 50px; left: 40px; font-size: 11px; }
 .cielo-ventana.noche .estrella { opacity: 1; }
 
 .marco-ventana {
@@ -146,60 +137,60 @@ button.activo {
 
 .estanteria {
   position: absolute;
-  left: 215px;
-  top: 125px;
-  width: 135px;
-  height: 14px;
+  left: 36%;
+  top: 18%;
+  width: 125px;
+  height: 12px;
   background: #8D5524;
   border-radius: 4px;
 }
 
 #radio {
   position: absolute;
-  top: -58px;
+  top: -54px;
   left: 22px;
   cursor: pointer;
 }
 
 #notas-musicales {
   position: absolute;
-  top: -25px;
-  right: -15px;
-  font-size: 20px;
+  top: -22px;
+  right: -12px;
+  font-size: 18px;
   animation: flotar 1.5s infinite alternate;
 }
 
-/* Armario del Dormitorio */
-#armario-contenedor {
+/* Armario visible con fondo marrón */
+#armario {
   position: absolute;
-  left: 430px;
-  top: 135px;
-  width: 145px;
-  height: 255px;
+  right: 5%;
+  top: 12%;
+  width: 135px;
+  height: 235px;
 }
 
 .armario-interior {
   width: 100%;
   height: 100%;
   background: #FFE5D9;
-  border: 8px solid #D4A373;
+  border: 8px solid #8D5524;
   border-radius: 10px;
   position: relative;
 }
 
 .barra-perchas {
   position: absolute;
-  top: 38px;
+  top: 32px;
   width: 100%;
-  height: 6px;
-  background: #8D5524;
+  height: 5px;
+  background: #5C3A21;
 }
 
 #puerta-armario {
   position: absolute;
   inset: 0;
-  background: #FAEDCD;
-  border: 6px solid #D4A373;
+  background: #DDB892;
+  border: 6px solid #8D5524;
   border-radius: 10px;
   cursor: pointer;
   transform-origin: left center;
@@ -213,51 +204,51 @@ button.activo {
 
 #puerta-armario.abierta {
   transform: perspective(600px) rotateY(-115deg);
-  pointer-events: none; /* Permite agarrar la ropa dentro */
+  pointer-events: none;
 }
 
 .pomo-armario {
   position: absolute;
   right: 12px;
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
-  background: #8D5524;
+  background: #5C3A21;
 }
 
-/* Caballete de Pintura */
+/* Caballete separado de la ventana */
 #caballete {
   position: absolute;
-  left: 295px;
-  top: 245px;
+  left: 44%;
+  top: 42%;
   cursor: pointer;
 }
 
 .alfombra {
   position: absolute;
-  left: 60px;
-  top: 395px;
-  width: 260px;
-  height: 60px;
+  left: 6%;
+  bottom: 6%;
+  width: 240px;
+  height: 55px;
   background: #CDB4DB;
-  border: 5px solid #FFC8DD;
+  border: 4px solid #FFC8DD;
   border-radius: 50%;
 }
 
 #cama {
   position: absolute;
-  left: 25px;
-  top: 265px;
-  width: 240px;
-  height: 150px;
+  left: 4%;
+  bottom: 13%;
+  width: 220px;
+  height: 140px;
 }
 
 #edredon {
   position: absolute;
-  left: 85px;
-  top: 68px;
-  width: 132px;
-  height: 52px;
+  left: 78px;
+  top: 63px;
+  width: 120px;
+  height: 48px;
   background: repeating-linear-gradient(45deg, #FFAFCC, #FFAFCC 12px, #FFC8DD 12px, #FFC8DD 24px);
   border-radius: 10px;
   border: 2px solid #FF8FA3;
@@ -267,9 +258,9 @@ button.activo {
 
 #zzz {
   position: absolute;
-  top: -20px;
-  left: 40px;
-  font-size: 22px;
+  top: -18px;
+  left: 35px;
+  font-size: 20px;
   font-weight: bold;
   color: #457B9D;
   animation: flotar 1.5s infinite alternate;
@@ -278,48 +269,47 @@ button.activo {
 
 /* --- DIVISOR --- */
 .arco-divisor {
-  width: 24px;
+  width: 18px;
   height: 100%;
   background: #D4A373;
-  border-left: 4px solid #BC6C25;
-  border-right: 4px solid #BC6C25;
+  border-left: 3px solid #BC6C25;
+  border-right: 3px solid #BC6C25;
 }
 
 /* --- COCINA --- */
 .cocina {
-  background: linear-gradient(to bottom, #E8F5E9 68%, #D8E2DC 68%);
+  background: linear-gradient(to bottom, #E8F5E9 72%, #D8E2DC 72%);
 }
 
 .encimera {
   position: absolute;
-  left: 40px;
-  top: 265px;
-  width: 185px;
-  height: 130px;
+  left: 6%;
+  bottom: 24%;
+  width: 165px;
+  height: 120px;
   background: #A8DADC;
-  border-top: 14px solid #457B9D;
+  border-top: 12px solid #457B9D;
   border-radius: 6px;
 }
 
 .fogon {
   position: absolute;
-  top: -20px;
-  left: 50px;
-  width: 75px;
+  top: -18px;
+  left: 45px;
+  width: 70px;
   height: 6px;
   background: #2B2D42;
 }
 
 .llama {
   position: absolute;
-  top: -8px;
-  left: 10px;
-  width: 55px;
-  height: 8px;
+  top: -7px;
+  left: 8px;
+  width: 54px;
+  height: 7px;
   background: #00BBF9;
   border-radius: 4px;
   opacity: 0;
-  transition: opacity 0.3s;
 }
 
 .llama.encendida {
@@ -329,32 +319,32 @@ button.activo {
 
 #sarten {
   position: absolute;
-  top: -46px;
-  left: 38px;
+  top: -42px;
+  left: 35px;
 }
 
-#nevera-contenedor {
+#nevera {
   position: absolute;
-  left: 270px;
-  top: 140px;
-  width: 135px;
-  height: 255px;
+  left: 38%;
+  bottom: 24%;
+  width: 130px;
+  height: 240px;
 }
 
 .nevera-interior {
   width: 100%;
   height: 100%;
   background: #CAF0F8;
-  border: 8px solid #90E0EF;
-  border-radius: 14px;
+  border: 7px solid #90E0EF;
+  border-radius: 12px;
   position: relative;
 }
 
 .balda {
   position: absolute;
-  top: 75px;
+  top: 70px;
   width: 100%;
-  height: 6px;
+  height: 5px;
   background: #90E0EF;
 }
 
@@ -363,42 +353,41 @@ button.activo {
   inset: 0;
   background: #FFFFFF;
   border: 6px solid #ADE8F4;
-  border-radius: 14px;
+  border-radius: 12px;
   cursor: pointer;
   transform-origin: right center;
   transition: transform 0.4s ease;
   z-index: 30;
-  box-shadow: -4px 4px 10px rgba(0,0,0,0.1);
 }
 
 #puerta-nevera.abierta {
   transform: perspective(600px) rotateY(115deg);
-  pointer-events: none; /* Permite sacar la comida de dentro */
+  pointer-events: none;
 }
 
 .tirador {
   position: absolute;
-  left: 12px;
-  top: 85px;
-  width: 8px;
-  height: 55px;
+  left: 10px;
+  top: 80px;
+  width: 7px;
+  height: 50px;
   background: #ADB5BD;
   border-radius: 4px;
 }
 
 .iman-corazon {
   position: absolute;
-  right: 20px;
-  top: 40px;
-  font-size: 22px;
+  right: 18px;
+  top: 35px;
+  font-size: 20px;
 }
 
 .mesa-cocina {
   position: absolute;
-  left: 445px;
-  top: 305px;
-  width: 155px;
-  height: 90px;
+  right: 6%;
+  bottom: 24%;
+  width: 140px;
+  height: 85px;
   background: #DDB892;
   border-top: 12px solid #B08968;
   border-radius: 6px;
@@ -417,13 +406,12 @@ button.activo {
   z-index: 100;
 }
 
-.oculto-nevera, .oculto-puerta {
+.item-nevera, .item-armario {
   display: none;
 }
 
-/* Avatar dormido con cabeza en la almohada (izquierda) */
 #avatar.durmiendo {
-  transform: rotate(-90deg) scale(0.9);
+  transform: rotate(-90deg) scale(0.88);
   z-index: 40;
 }
 
@@ -433,5 +421,5 @@ button.activo {
 
 @keyframes flotar {
   from { transform: translateY(0); }
-  to { transform: translateY(-8px); }
+  to { transform: translateY(-7px); }
 }
