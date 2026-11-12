@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mi Mundo Creativo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Barra superior de personalización (Sin candados ni compras) -->
+  <header class="panel-control">
+    <button onclick="cambiarPiel()">🎨 Piel</button>
+    <button onclick="cambiarPelo()">💇 Pelo</button>
+    <button onclick="cambiarRopa()">👕 Ropa</button>
+    <button onclick="reiniciarObjetos()">🔄 Reponer Comida</button>
+  </header>
+
+  <!-- Escenario principal -->
+  <main id="escenario" class="luz-encendida">
+    
+    <!-- Lámpara interactiva (clic para apagar/encender) -->
+    <div id="lampara" class="objeto-fijo" onclick="alternarLuz()" title="Toca para encender/apagar">
+      <svg width="70" height="110" viewBox="0 0 70 110">
+        <polygon points="15,40 55,40 65,10 5,10" fill="#FFD166"/>
+        <rect x="32" y="40" width="6" height="55" fill="#8D99AE"/>
+        <ellipse cx="35" cy="95" rx="20" ry="6" fill="#2B2D42"/>
+      </svg>
+    </div>
+
+    <!-- Mesa -->
+    <div id="mesa"></div>
+
+    <!-- Manzana arrastrable -->
+    <div id="manzana" class="arrastrable" style="left: 120px; top: 310px;">
+      <svg width="50" height="50" viewBox="0 0 50 50">
+        <circle cx="25" cy="28" r="18" fill="#EF476F"/>
+        <path d="M25 10 Q28 2 35 5" stroke="#06D6A0" stroke-width="4" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- Gorro arrastrable (se lo puedes poner en la cabeza) -->
+    <div id="gorro" class="arrastrable" style="left: 60px; top: 300px;">
+      <svg width="70" height="50" viewBox="0 0 70 50">
+        <path d="M10 35 Q35 5 60 35 Z" fill="#118AB2"/>
+        <rect x="5" y="33" width="60" height="8" rx="4" fill="#073B4C"/>
+      </svg>
+    </div>
+
+    <!-- EL AVATAR (Arrastrable y compuesto por capas SVG) -->
+    <div id="avatar" class="arrastrable" style="left: 260px; top: 180px;">
+      <svg width="140" height="240" viewBox="0 0 140 240">
+        <!-- Capa 1: Cuerpo y Cabeza -->
+        <g id="capa-cuerpo">
+          <rect x="45" y="100" width="50" height="80" rx="15" fill="#F4C29F"/>
+          <rect x="50" y="175" width="15" height="55" rx="7" fill="#F4C29F"/>
+          <rect x="75" y="175" width="15" height="55" rx="7" fill="#F4C29F"/>
+          <circle cx="70" cy="60" r="38" fill="#F4C29F"/>
+        </g>
+
+        <!-- Capa 2: Cara (Ojos y Boca) -->
+        <g id="capa-cara">
+          <circle cx="57" cy="55" r="4" fill="#2B2D42"/>
+          <circle cx="83" cy="55" r="4" fill="#2B2D42"/>
+          <path id="boca" d="M60 72 Q70 82 80 72" stroke="#2B2D42" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- Capa 3: Ropa -->
+        <g id="capa-ropa">
+          <rect x="43" y="102" width="54" height="55" rx="10" fill="#06D6A0"/>
+          <rect x="47" y="152" width="46" height="35" rx="5" fill="#118AB2"/>
+        </g>
+
+        <!-- Capa 4: Pelo -->
+        <g id="capa-pelo">
+          <path d="M32 55 C32 15, 108 15, 108 55 C108 35, 32 35, 32 55 Z" fill="#5C3A21"/>
+        </g>
+      </svg>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
