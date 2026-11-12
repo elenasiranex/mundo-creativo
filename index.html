@@ -3,81 +3,212 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Mi Mundo Creativo</title>
+  <title>Mundo Creativo - Casa Interactiva</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Barra superior de personalización (Sin candados ni compras) -->
+  <!-- Barra superior de herramientas y personalización -->
   <header class="panel-control">
-    <button onclick="cambiarPiel()">🎨 Piel</button>
-    <button onclick="cambiarPelo()">💇 Pelo</button>
-    <button onclick="cambiarRopa()">👕 Ropa</button>
-    <button onclick="reiniciarObjetos()">🔄 Reponer Comida</button>
+    <div class="grupo-botones">
+      <button onclick="cambiarGenero('nina')" id="btn-nina" class="activo">👧 Niña</button>
+      <button onclick="cambiarGenero('nino')" id="btn-nino">👦 Niño</button>
+      <button onclick="cambiarPiel()">🎨 Piel</button>
+      <button onclick="cambiarPelo()">💇 Peinado</button>
+      <button onclick="cambiarRopa()">👕 Ropa</button>
+    </div>
+    <div class="grupo-botones">
+      <button onclick="reponerNevera()" class="btn-secundario">🔄 Reponer Comida</button>
+    </div>
   </header>
 
-  <!-- Escenario principal -->
-  <main id="escenario" class="luz-encendida">
-    
-    <!-- Lámpara interactiva (clic para apagar/encender) -->
-    <div id="lampara" class="objeto-fijo" onclick="alternarLuz()" title="Toca para encender/apagar">
-      <svg width="70" height="110" viewBox="0 0 70 110">
-        <polygon points="15,40 55,40 65,10 5,10" fill="#FFD166"/>
-        <rect x="32" y="40" width="6" height="55" fill="#8D99AE"/>
-        <ellipse cx="35" cy="95" rx="20" ry="6" fill="#2B2D42"/>
-      </svg>
+  <!-- Escenario scrollable horizontalmente (Dormitorio + Cocina) -->
+  <main id="casa-contenedor">
+    <div id="casa">
+      
+      <!-- ==================== HABITACIÓN 1: DORMITORIO ==================== -->
+      <section class="habitacion dormitorio" id="dormitorio">
+        <!-- Ventana interactiva Día/Noche -->
+        <div id="ventana" onclick="alternarDiaNoche()" title="Toca para cambiar Día/Noche">
+          <div class="cielo-ventana" id="cielo-ventana">
+            <div class="astro" id="astro"></div>
+          </div>
+          <div class="marco-ventana"></div>
+        </div>
+
+        <!-- Estantería con Radio Musical -->
+        <div class="estanteria">
+          <div id="radio" onclick="alternarRadio()" title="Toca para poner música">
+            <svg width="85" height="60" viewBox="0 0 85 60">
+              <line x1="15" y1="18" x2="55" y2="3" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+              <rect x="5" y="18" width="75" height="40" rx="10" fill="#FF6B6B" stroke="#C92A2A" stroke-width="2"/>
+              <circle cx="24" cy="38" r="12" fill="#2B2D42"/>
+              <circle cx="24" cy="38" r="5" fill="#8D99AE"/>
+              <rect x="44" y="26" width="28" height="10" rx="3" fill="#FFF3BF"/>
+              <circle cx="50" cy="46" r="4" fill="#FFD166"/>
+              <circle cx="65" cy="46" r="4" fill="#FFD166"/>
+            </svg>
+            <span id="notas-musicales" class="oculto">🎵 🎶</span>
+          </div>
+        </div>
+
+        <!-- Alfombra suave -->
+        <div class="alfombra"></div>
+
+        <!-- Cama interactiva (Zona de descanso) -->
+        <div id="cama">
+          <svg width="240" height="150" viewBox="0 0 240 150">
+            <!-- Cabecero -->
+            <rect x="10" y="20" width="20" height="120" rx="8" fill="#8D5524"/>
+            <rect x="210" y="55" width="20" height="85" rx="8" fill="#8D5524"/>
+            <!-- Colchón y almohada -->
+            <rect x="25" y="70" width="190" height="45" rx="10" fill="#FFF"/>
+            <ellipse cx="55" cy="68" rx="25" ry="12" fill="#E2ECE9"/>
+            <!-- Estructura madera -->
+            <rect x="20" y="105" width="200" height="22" rx="6" fill="#B08968"/>
+          </svg>
+          <!-- Edredón superpuesto para tapar al avatar cuando duerme -->
+          <div id="edredon"></div>
+          <span id="zzz" class="oculto">zZz...</span>
+        </div>
+      </section>
+
+      <!-- Pared divisoria con arco abierto -->
+      <div class="arco-divisor"></div>
+
+      <!-- ==================== HABITACIÓN 2: COCINA ==================== -->
+      <section class="habitacion cocina" id="cocina">
+        
+        <!-- Encimera y Fogón con Sartén -->
+        <div class="encimera">
+          <div class="fogon">
+            <div class="llama" id="llama-fogon"></div>
+          </div>
+          <!-- Sartén interactiva -->
+          <div id="sarten">
+            <svg width="110" height="45" viewBox="0 0 110 45">
+              <rect x="70" y="18" width="38" height="8" rx="4" fill="#495057"/>
+              <path d="M10 15 H75 L68 35 H17 Z" fill="#212529"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Nevera interactiva (Se abre al tocar) -->
+        <div id="nevera-contenedor">
+          <div class="nevera-interior" id="nevera-interior">
+            <div class="balda"></div>
+            <div class="balda" style="top: 130px;"></div>
+          </div>
+          <!-- Puerta de la nevera -->
+          <div id="puerta-nevera" onclick="alternarNevera()" title="Toca para abrir/cerrar">
+            <div class="tirador"></div>
+            <div class="iman-corazon">❤️</div>
+          </div>
+        </div>
+
+        <!-- Mesa de comedor -->
+        <div class="mesa-cocina"></div>
+
+        <!-- Alimentos arrastrables (Aparecen dentro de la nevera) -->
+        <div id="huevo" class="arrastrable comida" data-estado="crudo" style="left: 760px; top: 230px;">
+          <svg width="42" height="48" viewBox="0 0 42 48">
+            <ellipse cx="21" cy="26" rx="15" ry="19" fill="#FFF3E0" stroke="#E0C097" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div id="fresa" class="arrastrable comida" style="left: 810px; top: 235px;">
+          <svg width="40" height="45" viewBox="0 0 40 45">
+            <path d="M10 15 Q20 42 30 15 Q20 10 10 15 Z" fill="#FF4D6D"/>
+            <path d="M12 14 L20 8 L28 14 Z" fill="#2EC4B6"/>
+            <circle cx="17" cy="22" r="1.5" fill="#FFF"/>
+            <circle cx="23" cy="24" r="1.5" fill="#FFF"/>
+            <circle cx="20" cy="30" r="1.5" fill="#FFF"/>
+          </svg>
+        </div>
+
+        <div id="leche" class="arrastrable comida" style="left: 775px; top: 305px;">
+          <svg width="42" height="60" viewBox="0 0 42 60">
+            <polygon points="10,15 32,15 36,24 6,24" fill="#4EA8DE"/>
+            <rect x="6" y="24" width="30" height="32" rx="3" fill="#F8F9FA" stroke="#DEE2E6" stroke-width="2"/>
+            <rect x="6" y="34" width="30" height="10" fill="#4EA8DE"/>
+          </svg>
+        </div>
+
+      </section>
+
+      <!-- ==================== EL AVATAR REDISEÑADO ==================== -->
+      <div id="avatar" class="arrastrable" style="left: 340px; top: 220px;">
+        <svg width="150" height="250" viewBox="0 0 150 250">
+          <!-- Pelo trasero (para melena larga) -->
+          <g id="capa-pelo-trasero"></g>
+
+          <!-- Piernas y Zapatos -->
+          <g id="capa-piernas">
+            <rect x="52" y="175" width="16" height="50" rx="8" class="piel" fill="#F8C8A0"/>
+            <rect x="82" y="175" width="16" height="50" rx="8" class="piel" fill="#F8C8A0"/>
+            <!-- Zapatillas -->
+            <rect x="48" y="218" width="24" height="14" rx="7" fill="#FF6B6B"/>
+            <rect x="78" y="218" width="24" height="14" rx="7" fill="#FF6B6B"/>
+          </g>
+
+          <!-- Brazos -->
+          <g id="capa-brazos">
+            <rect x="33" y="112" width="15" height="52" rx="7" transform="rotate(12 33 112)" class="piel" fill="#F8C8A0"/>
+            <rect x="102" y="112" width="15" height="52" rx="7" transform="rotate(-12 102 112)" class="piel" fill="#F8C8A0"/>
+          </g>
+
+          <!-- Torso y Ropa -->
+          <g id="capa-ropa">
+            <!-- Camiseta -->
+            <path d="M46 110 Q75 105 104 110 L108 162 H42 Z" fill="#FF8FA3" id="prenda-superior"/>
+            <!-- Falda / Pantalón -->
+            <path d="M43 160 H107 L113 188 H37 Z" fill="#4EA8DE" id="prenda-inferior"/>
+          </g>
+
+          <!-- Cuello y Cabeza grande estilo Chibi/Avatar World -->
+          <g id="capa-cabeza">
+            <rect x="66" y="95" width="18" height="18" rx="6" class="piel" fill="#F8C8A0"/>
+            <!-- Orejas -->
+            <circle cx="32" cy="65" r="8" class="piel" fill="#F8C8A0"/>
+            <circle cx="118" cy="65" r="8" class="piel" fill="#F8C8A0"/>
+            <!-- Rostro -->
+            <rect x="34" y="22" width="82" height="78" rx="38" class="piel" fill="#F8C8A0"/>
+          </g>
+
+          <!-- Rasgos Faciales Expresivos -->
+          <g id="capa-cara">
+            <!-- Cejas -->
+            <path d="M48 48 Q55 44 62 48" stroke="#5C3A21" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M88 48 Q95 44 102 48" stroke="#5C3A21" stroke-width="3" fill="none" stroke-linecap="round"/>
+            
+            <!-- Ojos abiertos (con brillo kawaii) -->
+            <g id="ojos-abiertos">
+              <circle cx="55" cy="62" r="7" fill="#2B2D42"/>
+              <circle cx="53" cy="59" r="2.5" fill="#FFF"/>
+              <circle cx="95" cy="62" r="7" fill="#2B2D42"/>
+              <circle cx="93" cy="59" r="2.5" fill="#FFF"/>
+            </g>
+
+            <!-- Ojos cerrados (para dormir) -->
+            <g id="ojos-cerrados" style="display: none;">
+              <path d="M47 63 Q55 70 63 63" stroke="#2B2D42" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <path d="M87 63 Q95 70 103 63" stroke="#2B2D42" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            </g>
+
+            <!-- Coloretes -->
+            <ellipse cx="45" cy="72" rx="6" ry="3.5" fill="#FF8FA3" opacity="0.6"/>
+            <ellipse cx="105" cy="72" rx="6" ry="3.5" fill="#FF8FA3" opacity="0.6"/>
+
+            <!-- Boca -->
+            <path id="boca" d="M67 76 Q75 85 83 76" stroke="#C92A2A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- Flequillo / Pelo frontal -->
+          <g id="capa-pelo-frontal"></g>
+        </svg>
+      </div>
+
     </div>
-
-    <!-- Mesa -->
-    <div id="mesa"></div>
-
-    <!-- Manzana arrastrable -->
-    <div id="manzana" class="arrastrable" style="left: 120px; top: 310px;">
-      <svg width="50" height="50" viewBox="0 0 50 50">
-        <circle cx="25" cy="28" r="18" fill="#EF476F"/>
-        <path d="M25 10 Q28 2 35 5" stroke="#06D6A0" stroke-width="4" fill="none"/>
-      </svg>
-    </div>
-
-    <!-- Gorro arrastrable (se lo puedes poner en la cabeza) -->
-    <div id="gorro" class="arrastrable" style="left: 60px; top: 300px;">
-      <svg width="70" height="50" viewBox="0 0 70 50">
-        <path d="M10 35 Q35 5 60 35 Z" fill="#118AB2"/>
-        <rect x="5" y="33" width="60" height="8" rx="4" fill="#073B4C"/>
-      </svg>
-    </div>
-
-    <!-- EL AVATAR (Arrastrable y compuesto por capas SVG) -->
-    <div id="avatar" class="arrastrable" style="left: 260px; top: 180px;">
-      <svg width="140" height="240" viewBox="0 0 140 240">
-        <!-- Capa 1: Cuerpo y Cabeza -->
-        <g id="capa-cuerpo">
-          <rect x="45" y="100" width="50" height="80" rx="15" fill="#F4C29F"/>
-          <rect x="50" y="175" width="15" height="55" rx="7" fill="#F4C29F"/>
-          <rect x="75" y="175" width="15" height="55" rx="7" fill="#F4C29F"/>
-          <circle cx="70" cy="60" r="38" fill="#F4C29F"/>
-        </g>
-
-        <!-- Capa 2: Cara (Ojos y Boca) -->
-        <g id="capa-cara">
-          <circle cx="57" cy="55" r="4" fill="#2B2D42"/>
-          <circle cx="83" cy="55" r="4" fill="#2B2D42"/>
-          <path id="boca" d="M60 72 Q70 82 80 72" stroke="#2B2D42" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </g>
-
-        <!-- Capa 3: Ropa -->
-        <g id="capa-ropa">
-          <rect x="43" y="102" width="54" height="55" rx="10" fill="#06D6A0"/>
-          <rect x="47" y="152" width="46" height="35" rx="5" fill="#118AB2"/>
-        </g>
-
-        <!-- Capa 4: Pelo -->
-        <g id="capa-pelo">
-          <path d="M32 55 C32 15, 108 15, 108 55 C108 35, 32 35, 32 55 Z" fill="#5C3A21"/>
-        </g>
-      </svg>
-    </div>
-
   </main>
 
   <script src="app.js"></script>
